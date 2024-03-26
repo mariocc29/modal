@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="btnClass">{{ btnLabel }}</button>
+  <button class="btn" :class="btnClass" @click="toggleModal">{{ btnLabel }}</button>
 </template>
 
 <script lang="ts">
@@ -7,7 +7,7 @@ import { Options, Vue } from 'vue-class-component';
 
 @Options({
   props: {
-    'btnClass': {
+    'kindOf': {
       type: String
     },
     'btnLabel': {
@@ -16,8 +16,16 @@ import { Options, Vue } from 'vue-class-component';
   }
 })
 export default class Button extends Vue {
-  btnClass!: string;
+  kindOf!: string;
   btnLabel!: string;
+
+  get btnClass(): string {
+    return `btn-${this.kindOf}`
+  }
+
+  toggleModal() {
+    this.$emit('toggle-modal', this.kindOf);
+  }
 }
 </script>
 

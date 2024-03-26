@@ -1,24 +1,40 @@
 <template>
-  <section>
+  
+  <section class="wrapper">
     <article>
-      <Button :btnClass="'btn-info'" :btnLabel="'Info'"/>
-      <Button :btnClass="'btn-success'" :btnLabel="'Success'"/>
-      <Button :btnClass="'btn-warning'" :btnLabel="'Warning'"/>
-      <Button :btnClass="'btn-alert'" :btnLabel="'Alert'"/>
+      <Button :kindOf="'info'" :btnLabel="'Info'" @toggle-modal="toggleModal"/>
+      <Button :kindOf="'success'" :btnLabel="'Success'" @toggle-modal="toggleModal"/>
+      <Button :kindOf="'warning'" :btnLabel="'Warning'" @toggle-modal="toggleModal"/>
+      <Button :kindOf="'alert'" :btnLabel="'Alert'" @toggle-modal="toggleModal"/>
     </article>
   </section>
+
+  <div class="overlay" 
+    :class="{'fade-out': !showOverlay, 'fade-in': showOverlay}"></div>
+  
+  <Modal class="modal" v-if="showOverlay"/>
+
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Button from './components/button.vue';
+import Modal from './components/modal.vue';
 
 @Options({
   components: {
-    Button
+    Button,
+    Modal
   },
 })
-export default class App extends Vue {}
+export default class App extends Vue {
+  showOverlay = false;
+
+  toggleModal(kindOf: string) {
+    console.log(kindOf)
+    this.showOverlay = !this.showOverlay;
+  }
+}
 </script>
 
 <style lang="scss">
@@ -34,8 +50,9 @@ export default class App extends Vue {}
   font-family: "Roboto", sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  position: relative;
 
-  section {
+  .wrapper {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -48,6 +65,39 @@ export default class App extends Vue {}
       grid-template-rows: 1fr 1fr;
       gap: 10px;
     }
+  }
+
+  .overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1;
+    background-color: grey;
+    box-shadow: 0 15px 6px 0 rgba(53.64, 82, 0.14), 0 19px 19px 0 rgba(53, 64, 82, 0.14);
+
+    &.fade-out {
+      opacity: 0;
+      transition: opacity 0.3s ease-out;
+      pointer-events: none;
+    }
+
+    &.fade-in {
+      opacity: 0.7;
+      transition: opacity 0.3s ease-in;
+      pointer-events: all;
+    }
+  }
+
+  .modal {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    z-index: 2;
+    transform: translate(-50%, -50%);
+    height: 400px;
+    width: 400px;
   }
 }
 </style>
