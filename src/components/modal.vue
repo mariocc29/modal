@@ -71,14 +71,25 @@ export default class ModalComponent extends Vue {
     'alert': 'fa-circle-exclamation',
   }
 
+  /**
+   * Toggles the modal state by committing the 'TOGGLE_MODAL' mutation to the Vuex store.
+   */
   toggleModal() {
     this.$store.commit('TOGGLE_MODAL');
   }
 
+  /**
+   * Computes the CSS class for the modal based on its state.
+   * @returns {string} The computed CSS class for the modal.
+   */
   get modalClass(): string {
     return `modal-${this.state}`
   }
 
+  /**
+   * Computes the CSS class for the icon based on the modal's state.
+   * @returns {string} The computed CSS class for the icon.
+   */
   get iconClass(): string {
     return `${this.icons[this.state as MessageType]} icon-${this.state}`
   }
