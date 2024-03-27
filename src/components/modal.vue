@@ -1,52 +1,93 @@
 <template>
-  <section class="modal modal-info">
+  <OverlayComponent :closeOnOutsideClick="closeOnOutsideClick" />
+
+  <section class="modal"
+    :class="modalClass"
+    v-if="$store.state.showModal">
     <header>
-      <span>
+      <span @click="toggleModal()">
         <i class="fa-solid fa-xmark"></i>
       </span>
     </header>
+    
     <main>
       <div class="icon">
-        <i class="fa-solid fa-circle-info icon-info"></i>
+        <i class="fa-solid"
+          :class="iconClass"></i>
       </div>
       <div class="content">
-        <div class="text-title">
-          Ceci est le titre d'une modale d'info
-        </div>
+        <div class="title text-title">{{ title }}</div>
         <div class="message">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu
-          laoreet orci. Quisque mollis nibh eros, nec pretium leo luctus vitae.
-          Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
-          posuere cubilia Curae; Ut nec mauris nisl. Integer urna lorem,
-          venenatis et varius et, rutrum vitae arcu.
+          <slot name="message"></slot>
         </div>
       </div>
     </main>
-    <footer>
-      <div class="checkbox">
-        <label>
-          <input type="checkbox">
-          <span>Ne plus afficher</span>
-        </label>
-      </div>
-      <div class="buttons">
-        <button class="btn btn-cancel">Annuler</button>
-        <button class="btn btn-info">Confirmer</button>
-      </div> 
-    </footer>
+    
+    <slot name="footer"></slot>
   </section>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
+import Store from "@/store";
 
-export default class extends Vue {
-  
+import { MessageType } from '@/enums';
+import OverlayComponent from '@/components/overlay.vue';
+import ButtonComponent from '@/components/button.vue';
+
+@Options({
+  components: {
+    OverlayComponent,
+    ButtonComponent,
+  },
+  props: {
+    title :{
+      type: String,
+      require: true,
+    },
+    state: {
+      type: String,
+      require: false,
+      default: MessageType.INFO
+    },
+    closeOnOutsideClick: {
+      type: Boolean,
+      require: false,
+      default: true
+    }
+  }
+})
+export default class ModalComponent extends Vue {
+  $store!: typeof Store;
+
+  title!: string
+  state!: string
+  closeOnOutsideClick!: boolean
+
+  icons = {
+    'info': 'fa-circle-info',
+    'success': 'fa-circle-check',
+    'warning': 'fa-triangle-exclamation',
+    'alert': 'fa-circle-exclamation',
+  }
+
+  toggleModal() {
+    this.$store.commit('TOGGLE_MODAL');
+  }
+
+  get modalClass(): string {
+    return `modal-${this.state}`
+  }
+
+  get iconClass(): string {
+    return `${this.icons[this.state as MessageType]} icon-${this.state}`
+  }
 }
 </script>
 
 <style lang="scss" scoped>
 @import '@/styles/variables';
+@import '@/styles/mixins';
 
 .modal {
   background-color: $bg-color;
@@ -57,9 +98,10 @@ export default class extends Vue {
   transform: translate(-50%, -50%);
   border-radius: 3px;
 
-  &.modal-info {
-    border-top: 3px $color-primary-bg solid;
-  }
+  &.modal-info { border-top: 3px $color-primary-bg solid; }
+  &.modal-success { border-top: 3px $color-success-bg solid; }
+  &.modal-warning { border-top: 3px $color-warning-bg solid; }
+  &.modal-alert { border-top: 3px $color-alert-bg solid; }
 
   header {
     display: flex;
@@ -74,9 +116,10 @@ export default class extends Vue {
     padding: 0 36px 36px 36px;
 
     .icon {
-      .icon-info {
-        color: $color-primary-bg;
-      }
+      .icon-info { color: $color-primary-bg; }
+      .icon-success { color: $color-success-bg; }
+      .icon-warning { color: $color-warning-bg; }
+      .icon-alert { color: $color-alert-bg; }
     }
 
     .content {
@@ -84,33 +127,20 @@ export default class extends Vue {
       flex-direction: column;
       row-gap: 20px;
 
-      .message {
-        color: $color-secondary;
-      }
+      .message { color: $color-secondary; }
     }
-  }
 
-  footer {
-    display: flex;
-    justify-content: space-between;
-    padding: 12px 16px;
-    border-top: 1px $color-tertiary solid;
-
-    .checkbox {
-      display: flex;
+    @include sm() {
+      flex-direction: column;
       align-items: center;
-      
-      label {
-        display: flex;
-        align-items: center;
-        column-gap: 6px;
+      row-gap: 20px;
+
+      .title, .content {
+        text-align: center;
       }
     }
-
-    .buttons {
-      display: flex;
-      column-gap: 12px;
-    }
   }
+
+  @include sm() { max-width: 580px; }
 }
 </style>

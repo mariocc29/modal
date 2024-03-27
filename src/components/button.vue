@@ -1,5 +1,7 @@
 <template>
-  <button class="btn" :class="btnClass" @click="toggleModal">{{ btnLabel }}</button>
+  <button class="btn" :class="btnClass">
+    <slot></slot>
+  </button>
 </template>
 
 <script lang="ts">
@@ -8,26 +10,58 @@ import { Options, Vue } from 'vue-class-component';
 @Options({
   props: {
     'kindOf': {
-      type: String
-    },
-    'btnLabel': {
-      type: String
+      type: String,
     }
   }
 })
-export default class Button extends Vue {
+export default class ButtonComponent extends Vue {
   kindOf!: string;
-  btnLabel!: string;
 
   get btnClass(): string {
     return `btn-${this.kindOf}`
-  }
-
-  toggleModal() {
-    this.$emit('toggle-modal', this.kindOf);
   }
 }
 </script>
 
 <style lang="scss" scoped>
+@import '@/styles/variables';
+
+.btn {
+  border-radius: 2px;
+	display:inline-block;
+	cursor:pointer;
+	font-size:15px;
+	padding:6px 24px;
+	text-decoration:none;
+
+  &.btn-info {
+    background-color: $color-primary-bg;
+    border:1px solid $color-primary-border;
+    color: $color-primary-text;
+  }
+
+  &.btn-success {
+    background-color: $color-success-bg;
+    border:1px solid $color-success-border;
+    color: $color-success-text;
+  }
+
+  &.btn-warning {
+    background-color: $color-warning-bg;
+    border:1px solid $color-warning-border;
+    color: $color-warning-text;
+  }
+
+  &.btn-alert {
+    background-color: $color-alert-bg;
+    border:1px solid $color-alert-border;
+    color: $color-alert-text;
+  }
+
+  &.btn-cancel {
+    background-color: $color-cancel-bg;
+    border:1px solid $color-cancel-border;
+    color: $color-cancel-text;
+  }
+}
 </style>
