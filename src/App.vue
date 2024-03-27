@@ -12,7 +12,7 @@
   <div class="overlay" 
     :class="{'fade-out': !showOverlay, 'fade-in': showOverlay}"></div>
   
-  <Modal class="modal" v-if="showOverlay"/>
+  <Modal v-if="showOverlay"/>
 
 </template>
 
@@ -38,7 +38,9 @@ export default class App extends Vue {
 </script>
 
 <style lang="scss">
+@import '@/styles/variables';
 @import '@/styles/fonts';
+@import '@/styles/buttons';
 
 * {
   margin: 0;
@@ -46,10 +48,16 @@ export default class App extends Vue {
   box-sizing: border-box;
 }
 
-#app {
+body {
   font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: $color-primary;
+  background-color: $bg-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
   position: relative;
 
   .wrapper {
@@ -74,8 +82,7 @@ export default class App extends Vue {
     width: 100%;
     height: 100%;
     z-index: 1;
-    background-color: grey;
-    box-shadow: 0 15px 6px 0 rgba(53.64, 82, 0.14), 0 19px 19px 0 rgba(53, 64, 82, 0.14);
+    background-color: $color-primary;
 
     &.fade-out {
       opacity: 0;
@@ -88,16 +95,6 @@ export default class App extends Vue {
       transition: opacity 0.3s ease-in;
       pointer-events: all;
     }
-  }
-
-  .modal {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    z-index: 2;
-    transform: translate(-50%, -50%);
-    height: 400px;
-    width: 400px;
   }
 }
 </style>
