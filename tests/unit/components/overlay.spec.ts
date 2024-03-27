@@ -1,7 +1,9 @@
 import { VueWrapper, shallowMount } from '@vue/test-utils';
 import Vuex, { Commit, Store } from "vuex";
-import { RootState } from '../mocks/state.interface';
 import { ComponentPublicInstance } from 'vue';
+
+import { MessageType } from '@/enums';
+import { RootState } from '../mocks/state.interface';
 import OverlayComponent from '@/components/overlay.vue';
 
 
@@ -12,12 +14,13 @@ describe('OverlayComponent', () => {
   beforeEach(() => {
     store = new Vuex.Store<RootState>({
       state: {
-        showModal: false
+        showModal: false,
+        kindOf: MessageType.INFO
       },
       mutations: {
         TOGGLE_MODAL(state) {
           state.showModal = !state.showModal;
-        }
+        },
       },
     });
 

@@ -10,7 +10,7 @@
       <ButtonComponent :kindOf="'cancel'" @click="toggleModal()">
         Annuler
       </ButtonComponent>
-      <ButtonComponent :kindOf="state" @click="toggleModal()">
+      <ButtonComponent :kindOf="$store.state.kindOf" @click="toggleModal()">
         Confirmer
       </ButtonComponent>
     </div>
@@ -21,7 +21,6 @@
 import { Options, Vue } from 'vue-class-component';
 import Store from "@/store";
 
-import { MessageType } from '@/enums';
 import ButtonComponent from '@/components/button.vue';
 
 @Options({
@@ -29,11 +28,6 @@ import ButtonComponent from '@/components/button.vue';
     ButtonComponent
   },
   props: {
-    state: {
-      type: String,
-      require: false,
-      default: MessageType.INFO
-    },
     showCheckboxOption: {
       type: Boolean,
       require: false,
@@ -47,6 +41,9 @@ export default class ModalFooterComponent extends Vue {
   state!: string
   showCheckboxOption!: boolean
 
+  /**
+   * Toggles the modal state by committing the 'TOGGLE_MODAL' mutation to the Vuex store.
+   */
   toggleModal() {
     this.$store.commit('TOGGLE_MODAL');
   }

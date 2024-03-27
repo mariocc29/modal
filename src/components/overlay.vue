@@ -23,6 +23,9 @@ export default class OverlayComponent extends Vue {
   
   closeOnOutsideClick!: boolean
 
+  /**
+   * Toggles the modal state by committing the 'TOGGLE_MODAL' mutation to the Vuex store.
+   */
   toggleModal() {
     if( this.closeOnOutsideClick )
       this.$store.commit('TOGGLE_MODAL');

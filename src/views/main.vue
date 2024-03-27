@@ -35,9 +35,7 @@
     </template>
 
     <template v-slot:footer>
-      <ModalFooterComponent
-        :state="kindOf"
-        :showCheckboxOption="showCheckboxOption"/>
+      <ModalFooterComponent :showCheckboxOption="showCheckboxOption"/>
     </template>
     
   </ModalComponent>
@@ -80,6 +78,7 @@ export default class MainView extends Vue {
   toggleModal(kindOf: string) {
     this.kindOf = kindOf
     this.showCheckboxOption = (this.kindOf == this.kindOfInfo)
+    this.$store.commit('SET_KIND_OF_MODAL', this.kindOf)
     this.$store.commit('TOGGLE_MODAL');
   }
 }
