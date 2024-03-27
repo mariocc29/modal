@@ -17,6 +17,13 @@ import { Options, Vue } from 'vue-class-component';
 export default class ButtonComponent extends Vue {
   kindOf!: string;
 
+  /**
+   * Returns a string representing the CSS class that will be applied to the button.
+   * This class is derived from the 'kindOf' property of the component and is used
+   * to determine the style of the button.
+   * 
+   * @returns {string} A string representing the CSS class that will be applied to the button.
+   */
   get btnClass(): string {
     return `btn-${this.kindOf}`
   }
