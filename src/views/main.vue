@@ -75,6 +75,10 @@ export default class MainView extends Vue {
     'alert': "Ceci est le titre d'une modale de Danger"
   }
 
+  /**
+   * Toggles the modal state and updates the kindOf property.
+   * @param kindOf - The kind of modal to toggle.
+   */
   toggleModal(kindOf: string) {
     this.kindOf = kindOf
     this.showCheckboxOption = (this.kindOf == this.kindOfInfo)
