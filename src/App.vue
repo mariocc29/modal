@@ -3,21 +3,13 @@
 </template>
 
 <script lang="ts">
-import { Options, Vue } from 'vue-class-component';
-import MainPage from '@/pages/MainPage.vue'
-
-@Options({
-  components: {
-    MainPage
-  },
-})
+import { Vue } from 'vue-class-component';
 export default class App extends Vue {}
 </script>
 
 <style lang="scss">
 @import '@/styles/variables';
 @import '@/styles/fonts';
-@import '@/styles/buttons';
 
 * {
   margin: 0;
@@ -32,5 +24,9 @@ body {
   background-color: $bg-color;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+#app {
+  position: relative;
 }
 </style>

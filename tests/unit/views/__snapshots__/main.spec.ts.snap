@@ -1,0 +1,13 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`MainView should match with the snapshot 1`] = `
+<section>
+  <article>
+    <button-component-stub kindof="info"></button-component-stub>
+    <button-component-stub kindof="success"></button-component-stub>
+    <button-component-stub kindof="warning"></button-component-stub>
+    <button-component-stub kindof="alert"></button-component-stub>
+  </article>
+</section>
+<modal-component-stub title="Ceci est le titre d'une modale d'info" state="info" closeonoutsideclick="true"></modal-component-stub>
+`;

@@ -1,9 +1,9 @@
 import { createWebHashHistory, createRouter } from 'vue-router';
-import MainPage from '@/pages/MainPage.vue';
+import MainView from '@/views/main.vue';
 
 const routes = [
-  { path: '/', component: MainPage },
-  { path: '/:pathMatch(.*)*', component: MainPage }
+  { path: '/', component: MainView },
+  { path: '/:pathMatch(.*)*', component: MainView }
 ];
 
 const router = createRouter({
