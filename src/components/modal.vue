@@ -1,11 +1,13 @@
 <template>
-  <OverlayComponent :closeOnOutsideClick="closeOnOutsideClick" />
+  <OverlayComponent 
+    :closeOnOutsideClick="closeOnOutsideClick" 
+    @on-close="onClose"/>
 
   <section class="modal"
     :class="modalClass"
     v-if="$store.state.showModal">
     <header>
-      <span @click="toggleModal()">
+      <span @click="onClose()">
         <i class="fa-solid fa-xmark"></i>
       </span>
     </header>
@@ -27,10 +29,10 @@
     <footer>
       <slot name="footer">
         <div class="footer">
-          <ButtonComponent :kindOf="'cancel'" @click="toggleModal()">
+          <ButtonComponent :kindOf="'cancel'" @click="onClose()">
             Annuler
           </ButtonComponent>
-          <ButtonComponent :kindOf="state" @click="toggleModal()">
+          <ButtonComponent :kindOf="state" @click="onConfirm()">
             Confirmer
           </ButtonComponent>
         </div>
@@ -67,6 +69,11 @@ import ButtonComponent from '@/components/button.vue';
       require: false,
       default: true
     }
+  },
+  emits: {
+    onOpen: () => true,
+    onClose: () => true,
+    onConfirm: () => true
   }
 })
 export default class ModalComponent extends Vue {
@@ -83,10 +90,18 @@ export default class ModalComponent extends Vue {
     'alert': 'fa-circle-exclamation',
   }
 
+  mounted(): void {
+    this.$watch(() => this.$store.state.showModal, (status) => {
+      if(status === true){
+        this.$emit('onOpen')
+      }
+    });
+  }
+
   /**
    * Toggles the modal state by committing the 'TOGGLE_MODAL' mutation to the Vuex store.
    */
-  toggleModal() {
+  private toggleModal() {
     this.$store.commit('TOGGLE_MODAL');
   }
 
@@ -113,6 +128,24 @@ export default class ModalComponent extends Vue {
    */
   hasContentSlot(): boolean {
     return !!this.$slots.content;
+  }
+
+  /**
+   * Handler function for the close event.
+   * Emits the 'onClose' event and toggles the modal state.
+   */
+  onClose() {
+    this.$emit('onClose')
+    this.toggleModal()
+  }
+  
+  /**
+   * Handler function for the confirm event.
+   * Emits the 'onConfirm' event and toggles the modal state.
+   */
+  onConfirm() {
+    this.$emit('onConfirm')
+    this.toggleModal()
   }
 }
 </script>

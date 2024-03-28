@@ -1,7 +1,7 @@
 <template>
   <div class="overlay" 
     :class="{'fade-out': !$store.state.showModal, 'fade-in': $store.state.showModal}"
-    @click="toggleModal()">
+    @click="onClose()">
   </div>
 </template>
 
@@ -16,6 +16,9 @@ import Store from "@/store";
       require: false,
       default: true
     }
+  },
+  emits: {
+    onClose: () => true
   }
 })
 export default class OverlayComponent extends Vue {
@@ -24,11 +27,12 @@ export default class OverlayComponent extends Vue {
   closeOnOutsideClick!: boolean
 
   /**
-   * Toggles the modal state by committing the 'TOGGLE_MODAL' mutation to the Vuex store.
+   * Handles the close event when clicking outside the overlay, if enabled.
+   * Emits the 'onClose' event if 'closeOnOutsideClick' is true.
    */
-  toggleModal() {
+  onClose() {
     if( this.closeOnOutsideClick )
-      this.$store.commit('TOGGLE_MODAL');
+      this.$emit('onClose')
   }
 }
 </script>

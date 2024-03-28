@@ -30,6 +30,22 @@ describe('ModalComponent', () => {
     });
   });
 
+  describe(('when store.state.showModal is false'), () => {
+    beforeEach(() => {
+      store.state.showModal = false;
+    })
+
+    afterEach(() => {
+      store.state.showModal = true;
+    })
+
+    it('emits onOpen event when showModal status changes to true', async () => {
+      store.state.showModal = true;
+      await wrapper.vm.$nextTick();
+      expect(wrapper.emitted('onOpen')).toBeTruthy();
+    });
+  })
+
   it('renders Modal with Information State (Info)', async () => {
     await wrapper.setProps({ state: MessageType.INFO });
     
@@ -70,10 +86,11 @@ describe('ModalComponent', () => {
     expect(mainTag.find('.fa-solid').classes()).toContain('icon-alert');
   });
 
-  it('commits TOGGLE_MODAL when close button is clicked', async () => {
+  it('calls onClose method when close button is clicked', async () => {
     (store.commit as jest.MockedFunction<Commit>) = jest.fn();
     
     wrapper.find('header').find('span').trigger('click');
+    expect(wrapper.emitted('onClose')).toBeTruthy();
     expect(store.commit).toHaveBeenCalledWith('TOGGLE_MODAL');
   });
 
@@ -110,6 +127,24 @@ describe('ModalComponent', () => {
     expect(defaultFooterSlot.findAllComponents({name: 'ButtonComponent'}).length).toBe(2)
     expect(defaultFooterSlot.find('[kindOf="cancel"]')).toBeTruthy;
     expect(defaultFooterSlot.find('[kindOf="info"]')).toBeTruthy;
+  });
+
+  it('calls onClose method when "Annuler" button is clicked', async () => {
+    (store.commit as jest.MockedFunction<Commit>) = jest.fn();
+
+    await wrapper.find('[kindOf="cancel"]').trigger('click');
+    expect(wrapper.emitted('onClose')).toBeTruthy();
+    expect(store.commit).toHaveBeenCalledWith('TOGGLE_MODAL');
+  });
+
+  it('calls onConfirm method when "Confirmer" button is clicked', async () => {
+    await wrapper.setProps({ state: MessageType.INFO });
+
+    (store.commit as jest.MockedFunction<Commit>) = jest.fn();
+
+    await wrapper.find('[kindOf="info"]').trigger('click');
+    expect(wrapper.emitted('onConfirm')).toBeTruthy();
+    expect(store.commit).toHaveBeenCalledWith('TOGGLE_MODAL');
   });
 
   it('renders Modal with Footer Slot Content when slot exits', () => {

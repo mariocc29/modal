@@ -24,7 +24,10 @@
   <ModalComponent
     :title="modalTitles[kindOf as MessageType]"
     :state="kindOf"
-    :closeOnOutsideClick="true">
+    :closeOnOutsideClick="true"
+    @on-open="onModalOpen"
+    @on-close="onModalClose"
+    @on-confirm="onModalConfirm">
     
     <template v-slot:content>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu
@@ -35,14 +38,16 @@
     </template>
 
     <template v-slot:footer>
-      <ModalFooterComponent v-if="showCheckboxOption"/>
+      <ModalFooterComponent 
+        v-if="showCheckboxOption"
+        @on-close="onModalClose"
+        @on-confirm="onModalConfirm"/>
     </template>
     
   </ModalComponent>
 </template>
 
 <script lang="ts">
-
 import { Options, Vue } from 'vue-class-component';
 import { defineAsyncComponent } from 'vue';
 import Store from "@/store";
@@ -84,6 +89,27 @@ export default class MainView extends Vue {
     this.showCheckboxOption = (this.kindOf == this.kindOfInfo)
     this.$store.commit('SET_KIND_OF_MODAL', this.kindOf)
     this.$store.commit('TOGGLE_MODAL');
+  }
+
+  /**
+   * Handler function for when the modal is opened.
+   */
+  onModalOpen() {
+    console.log('The modal has been opened')
+  }
+
+  /**
+   * Handler function for when the modal is closed.
+   */
+  onModalClose() {
+    console.log('The modal has been closed')
+  }
+
+  /**
+   * Handler function for when the modal is confirmed.
+   */
+  onModalConfirm() {
+    console.log('The modal has been confirmed')
   }
 }
 </script>

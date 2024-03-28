@@ -40,19 +40,19 @@ describe('OverlayComponent', () => {
     expect(wrapper.find('.overlay').classes()).toContain('fade-in');
   });
 
-  it('commits TOGGLE_MODAL when overlay is clicked and closeOnOutsideClick is true', async () => {
+  it('emits onClose event when overlay is clicked and closeOnOutsideClick is true', async () => {
     (store.commit as jest.MockedFunction<Commit>) = jest.fn();
 
     await wrapper.setProps({ closeOnOutsideClick: true });
     wrapper.find('.overlay').trigger('click');
-    expect(store.commit).toHaveBeenCalledWith('TOGGLE_MODAL');
+    expect(wrapper.emitted('onClose')).toBeTruthy();
   });
 
-  it('does not commit TOGGLE_MODAL when overlay is clicked and closeOnOutsideClick is false', async () => {
+  it('does not emits onClose event when overlay is clicked and closeOnOutsideClick is false', async () => {
     (store.commit as jest.MockedFunction<Commit>) = jest.fn();
     
     await wrapper.setProps({ closeOnOutsideClick: false });
     wrapper.find('.overlay').trigger('click');
-    expect(store.commit).not.toHaveBeenCalled();
+    expect(wrapper.emitted('onClose')).toBeFalsy();
   });
 })

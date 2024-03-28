@@ -34,17 +34,19 @@ describe('ModalFooterComponent', () => {
     });
   });
 
-  it('calls toggleModal method when "Annuler" button is clicked', async () => {
+  it('calls onClose method when "Annuler" button is clicked', async () => {
     (store.commit as jest.MockedFunction<Commit>) = jest.fn();
 
     await wrapper.find('[kindOf="cancel"]').trigger('click');
+    expect(wrapper.emitted('onClose')).toBeTruthy();
     expect(store.commit).toHaveBeenCalledWith('TOGGLE_MODAL');
   });
 
-  it('calls toggleModal method when "Confirmer" button is clicked', async () => {
+  it('calls onConfirm method when "Confirmer" button is clicked', async () => {
     (store.commit as jest.MockedFunction<Commit>) = jest.fn();
 
     await wrapper.find('[kindOf="info"]').trigger('click');
+    expect(wrapper.emitted('onConfirm')).toBeTruthy();
     expect(store.commit).toHaveBeenCalledWith('TOGGLE_MODAL');
   });
 })
