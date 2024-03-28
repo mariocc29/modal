@@ -26,7 +26,7 @@
     :state="kindOf"
     :closeOnOutsideClick="true">
     
-    <template v-slot:message>
+    <template v-slot:content>
       Lorem ipsum dolor sit amet, consectetur adipiscing elit. Mauris eu
       laoreet orci. Quisque mollis nibh eros, nec pretium leo luctus vitae.
       Vestibulum ante ipsum primis in faucibus orci luctus et ultrices
@@ -35,7 +35,7 @@
     </template>
 
     <template v-slot:footer>
-      <ModalFooterComponent :showCheckboxOption="showCheckboxOption"/>
+      <ModalFooterComponent v-if="showCheckboxOption"/>
     </template>
     
   </ModalComponent>

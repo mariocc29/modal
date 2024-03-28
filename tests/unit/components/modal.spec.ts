@@ -9,8 +9,6 @@ import ModalComponent from '@/components/modal.vue';
 describe('ModalComponent', () => {
   let store: Store<RootState>;
   let wrapper: VueWrapper<ComponentPublicInstance>;
-  let messageSlotContent = 'Message goes here';
-  let footerSlotContent = 'Footer goes here';
 
   beforeEach(() => {
     store = new Vuex.Store<RootState>({
@@ -28,10 +26,6 @@ describe('ModalComponent', () => {
     wrapper = shallowMount(ModalComponent, {
       global: {
         plugins: [store]
-      },
-      slots: {
-        message: messageSlotContent,
-        footer: footerSlotContent
       }
     });
   });
@@ -90,11 +84,46 @@ describe('ModalComponent', () => {
     expect(wrapper.find('.title').text()).toContain(expectedTitle);
   });
 
-  it('renders Modal with Message Slot Content', async () => {
+  it('renders Modal without a Message Slot Content', () => {
+    const messageSlotContent = 'ERROR: missing content slot';
+    expect(wrapper.find('.message').text()).toContain(messageSlotContent);
+  })
+
+  it('renders Modal with Message Slot Content', () => {
+    const messageSlotContent = 'Message goes here';
+    const wrapper = shallowMount(ModalComponent, {
+      global: {
+        plugins: [store]
+      },
+      slots: {
+        content: messageSlotContent
+      }
+    });
+
     expect(wrapper.find('.message').text()).toContain(messageSlotContent);
   });
   
-  it('renders Modal with Footer Slot Content', () => {
-    expect(wrapper.text()).toContain(footerSlotContent);
+  it('renders Modal with Footer Slot Content when slot does not exits', async () => {
+    await wrapper.setProps({ state: MessageType.INFO });
+    
+    const defaultFooterSlot = wrapper.find('.footer')
+    expect(defaultFooterSlot.findAllComponents({name: 'ButtonComponent'}).length).toBe(2)
+    expect(defaultFooterSlot.find('[kindOf="cancel"]')).toBeTruthy;
+    expect(defaultFooterSlot.find('[kindOf="info"]')).toBeTruthy;
+  });
+
+  it('renders Modal with Footer Slot Content when slot exits', () => {
+    const footerSlotContent = 'Footer goes here';
+    
+    const wrapper = shallowMount(ModalComponent, {
+      global: {
+        plugins: [store]
+      },
+      slots: {
+        footer: footerSlotContent
+      }
+    });
+
+    expect(wrapper.find('footer').text()).toContain(footerSlotContent);
   });
 })

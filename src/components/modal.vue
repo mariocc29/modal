@@ -18,12 +18,24 @@
       <div class="content">
         <div class="title text-title">{{ title }}</div>
         <div class="message">
-          <slot name="message"></slot>
+          <slot name="content" v-if="hasContentSlot()"></slot>
+          <p v-else>ERROR: missing content slot</p>
         </div>
       </div>
     </main>
     
-    <slot name="footer"></slot>
+    <footer>
+      <slot name="footer">
+        <div class="footer">
+          <ButtonComponent :kindOf="'cancel'" @click="toggleModal()">
+            Annuler
+          </ButtonComponent>
+          <ButtonComponent :kindOf="state" @click="toggleModal()">
+            Confirmer
+          </ButtonComponent>
+        </div>
+      </slot>
+    </footer>
   </section>
 </template>
 
@@ -93,6 +105,15 @@ export default class ModalComponent extends Vue {
   get iconClass(): string {
     return `${this.icons[this.state as MessageType]} icon-${this.state}`
   }
+
+  /**
+   * Checks if there is content in the "content" slot.
+   * 
+   * @returns {boolean} Returns true if there is content in the "content" slot, otherwise returns false.
+   */
+  hasContentSlot(): boolean {
+    return !!this.$slots.content;
+  }
 }
 </script>
 
@@ -149,6 +170,20 @@ export default class ModalComponent extends Vue {
       .title, .content {
         text-align: center;
       }
+    }
+  }
+
+  footer {
+    display: flex;
+    padding: 12px 16px;
+    justify-content: space-between;
+    border-top: 1px $color-tertiary solid;
+    
+    .footer {
+      display: flex;
+      justify-content: end;
+      column-gap: 12px;
+      flex-basis: 100%;
     }
   }
 

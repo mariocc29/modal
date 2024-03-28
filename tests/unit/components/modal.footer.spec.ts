@@ -34,16 +34,6 @@ describe('ModalFooterComponent', () => {
     });
   });
 
-  it('shows checkbox option when showCheckboxOption is true', async () => {
-    await wrapper.setProps({ showCheckboxOption: true });
-    expect(wrapper.find('input[type=checkbox]').exists()).toBeTruthy();
-  });
-
-  it('does not show checkbox option when showCheckboxOption is false', async () => {
-    await wrapper.setProps({ showCheckboxOption: false });
-    expect(wrapper.find('input[type=checkbox]').exists()).toBeFalsy();
-  });
-
   it('calls toggleModal method when "Annuler" button is clicked', async () => {
     (store.commit as jest.MockedFunction<Commit>) = jest.fn();
 

@@ -1,7 +1,7 @@
 <template>
-  <footer>
+  <div class="footer">
     <div class="checkbox">
-      <label v-if="showCheckboxOption">
+      <label>
         <input type="checkbox">
         <span>Ne plus afficher</span>
       </label>
@@ -14,7 +14,7 @@
         Confirmer
       </ButtonComponent>
     </div>
-  </footer>
+  </div>
 </template>
 
 <script lang="ts">
@@ -26,20 +26,10 @@ import ButtonComponent from '@/components/button.vue';
 @Options({
   components: {
     ButtonComponent
-  },
-  props: {
-    showCheckboxOption: {
-      type: Boolean,
-      require: false,
-      default: true
-    }
   }
 })
 export default class ModalFooterComponent extends Vue {
   $store!: typeof Store;
-
-  state!: string
-  showCheckboxOption!: boolean
 
   /**
    * Toggles the modal state by committing the 'TOGGLE_MODAL' mutation to the Vuex store.
@@ -50,15 +40,14 @@ export default class ModalFooterComponent extends Vue {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 @import '@/styles/variables';
 @import '@/styles/mixins';
 
-footer {
+.footer {
   display: flex;
+  flex-basis: 100%;
   justify-content: space-between;
-  padding: 12px 16px;
-  border-top: 1px $color-tertiary solid;
 
   .checkbox {
     display: flex;
